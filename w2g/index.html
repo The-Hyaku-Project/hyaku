@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Hyaku | Watch2Gether</title>
+<script src="/script.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <!-- Font Awesome -->
@@ -189,7 +190,7 @@ var url_string = location.href;
 var id = "37854";
 var realID = "37854";
 function reload() {
-fetch("https://api.themoviedb.org/3/tv/" + id + "?api_key=7f43cb004071d31460301e2127f5fb41")
+fetch("https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key)
   .then((response) => response.json())
   .then((data) => backdrop(data));
 }
@@ -197,7 +198,7 @@ reload();
 function showData(x) {
   document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-sm btn-dark\" style=\"background-color:black;\">Fetch Again</button> <button onclick=\"/w2g-host/\" class=\"btn btn-sm btn-dark\" style="background-color:#242424;">Host Session</button></div><br><br>";
   x.results.forEach(async function(item, index) {
-    var fetchReqMain = await fetch("https://api.themoviedb.org/3/tv/" + item.animeID + "?api_key=7f43cb004071d31460301e2127f5fb41");
+    var fetchReqMain = await fetch("https://api.themoviedb.org/3/tv/" + item.animeID + "?api_key=" + api_key);
     var fetchDataM = await fetchReqMain.json();
     console.log(fetchDataM);
     document.getElementById("mainContainer").innerHTML += `    <a href="/w2g-view/` + item.id + `"><div style="background-color:#242424;width:250px;height:200px;display:inline-block;border-radius:5px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
@@ -207,7 +208,7 @@ function showData(x) {
   });
 }
 function reFetch() {
-	fetch("https://1e92a5c8-ca7c-4074-b2f2-91901ae30fb4.id.repl.co/api")
+	fetch("/w2g-server/api")
   	.then((response) => response.json())
  	.then((data) => showData(data));
 }
