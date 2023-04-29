@@ -13,5 +13,8 @@ This repository, and all other repositories within this organization are under t
 The frontend is designed to run on Netlify. Please modify the [_redirects](_redirects) file according to your needs.
 Also make sure to change the `api_key` variable in [script.js](script.js) to your [TMDb.org](https://themoviedb.org/).
 
+# Contribution
+Fork this repository, make changes, and then create a pull request.
+
 ---
 Made possible using [<img src="consumet.webp" width="30px"> Consumet](https://github.com/consumet).<br>Arigatou, [@riimuru](https://github.com/riimuru) for feedback in the early stages of Hyaku.
