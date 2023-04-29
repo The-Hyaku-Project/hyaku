@@ -1,0 +1,7 @@
+<script>
+  var lsSave = localStorage.getItem("miniPlayer").split("~");
+  var id = lsSave[0];
+  var se = lsSave[1];
+  var ep = lsSave[2];
+  location.replace("/stream/?id=" + id + "&s=" + se + "&e=" + ep + "&mini=true");
+</script>

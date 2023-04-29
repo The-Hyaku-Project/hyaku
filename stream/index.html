@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video Player</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+</head>
+<body style="background-color:black;color:white;">
+
+<iframe id="player" src="/stream/animepahe.html" mozallowfullscreen allowfullscreen webkitallowfullscreen style="position:fixed;top:0;left:0;width:100%;height:100%;border:0;"></iframe>
+
+<button id="serverSelect" class="btn btn-lg btn-dark" style="position:fixed;top:10px;right:10px;width:140px;border-radius:5px;" onclick="hide(this.nextElementSibling, this);"><i class="fas fa-bars"></i>&nbsp;&nbsp;Server</button>
+<div style="position:fixed;top:58px;right:10px;width:140px;opacity:0;display:none;transition:0.3s all;" class="displayNone">
+<button class="btn btn-lg btn-dark" style="width:100%;border-radius:0 0 0 0 !important;" onclick="document.getElementById('player').src=zoro;localStorage.removeItem('server');">Zoro.to</button><br>
+<button class="btn btn-lg btn-dark" style="width:100%;border-radius:0 0 5px 5px !important;" onclick="document.getElementById('player').src=gogoAnime;localStorage.setItem('server', 'gogo');">GogoAnime</button>
+<!-- <button class="btn btn-lg btn-dark" style="width:100%;border-radius:0 0 5px 5px !important;" onclick="document.getElementById('player').src=animepahe;">AnimePahe</button> -->
+<!-- <button class="btn btn-lg btn-dark" style="width:100%;border-radius:0 0 5px 5px !important;" onclick="document.getElementById('player').src=animixplay;">AniMixPlay</button> -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+var url_string = window.location.href;
+var url = new URL(url_string);
+var id = url.searchParams.get("id");
+var se = url.searchParams.get("s");
+var ep = url.searchParams.get("e");
+if (url_string.includes("mini=true")) {
+  document.getElementById("serverSelect").style.display = "none";
+}
+
+var animepahe = "/stream/animepahe.html?id=" + id + "&s=" + se + "&e=" + ep;
+var zoro = "/stream/zoro-1.html?id=" + id + "&s=" + se + "&e=" + ep;
+var animixplay = "/stream/animixplay.html?id=" + id + "&s=" + se + "&e=" + ep;
+var gogoAnime = "/stream/gogo.html?id=" + id + "&s=" + se + "&e=" + ep;;
+document.getElementById("player").src = zoro;
+if (localStorage.getItem('server') && localStorage.getItem('server') == "gogo") {
+  document.getElementById("player").src = gogoAnime;
+}
+function hide(x, y) {
+  if (!x.classList.contains("displayNone")) {
+  	x.style.opacity = 0;
+  	setTimeout(function() {
+   	 x.style.display = "none";
+     y.style.borderRadius = "5px";
+  	}, 500);
+    x.classList.add("displayNone");
+  }
+  else {
+    x.style.display = "block";
+  	setTimeout(function() {
+   	 x.style.opacity = 1;
+     y.style.borderRadius = "5px 5px 0 0";
+  	}, 50);
+    x.classList.remove("displayNone");
+  }
+}
+window.addEventListener("message",
+   function(e) {
+     if (typeof e.data === "string" && e.data.startsWith("seekTo::")) {
+    	console.log(e.data);
+	    document.getElementById("player").contentWindow.postMessage(e.data);
+     }
+   },
+false);
+</script>
+</body>
+</html>

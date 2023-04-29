@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>AnimePahe</title>
+ <link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css">
+ <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&amp;display=swap" rel="stylesheet">
+ <style>body{font-family: 'Lexend deca',sans-serif;background-color:black;}.plyr__video-wrapper{ background:black !important;} #videocontainer{height:100vh;width:100vw;} .plyr__control--overlaid{border-radius:50%;}.plyr{height:100% !important;}.plyr__menu__container{border-radius:2px;}.plyr__time+.plyr__time{display:block;}</style>
+</head>
+<body>
+
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;" id="videocontainer">
+ <video autoplay crossorigin id="player1" style="position:fixed;width:100%;height:100%;" controls></video>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+<script>
+const video = document.querySelector("video");
+video.addEventListener('loadeddata', function() {
+   if (localStorage.getItem("currentPlayerTime~" + id + "~" + episode + "~" + season)) {
+     video.currentTime = localStorage.getItem("currentPlayerTime~" + id + "~" + episode + "~" + season);
+   }
+   video.play();
+   setInterval(function() {
+    localStorage.setItem("currentPlayerTime~" + id + "~" + episode + "~" + season, document.getElementById("player1").currentTime);
+   }, 1000);
+}, false);
+var path2vtt = "";
+	function load() {
+        var player = new Plyr("#player1",{ previewThumbnails: { enabled: true,src: [path2vtt]}});
+            player.on('ready', function(event){
+                var instance = event.detail.plyr;
+
+                var hslSource = null;
+                var sources = instance.media.querySelectorAll('source'), i;
+                for (i = 0; i < sources.length; ++i) {
+                    if(sources[i].src.indexOf('.m3u8') > -1){
+                        hslSource = sources[i].src;
+                    }
+                }
+
+                if (hslSource !== null && Hls.isSupported()) {
+                    var hls = new Hls();
+                        hls.loadSource(hslSource);
+                        hls.attachMedia(instance.media);
+                        hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                            console.log('MANIFEST_PARSED');
+                        });
+                }
+            });
+    }
+var url_string = window.location.href;
+var url = new URL(url_string);
+var episode = url.searchParams.get("e");
+var id = url.searchParams.get("id");
+var season = url.searchParams.get("s");
+/*document.getElementById("season").setAttribute("placeholder", "Season: " + season);
+document.getElementById("episode").setAttribute("placeholder", "Episode: " + episode);
+document.getElementById("id").value = Number(id);*/
+    function go4(x) {
+    console.log(x);
+    var item = x.sources[0];
+     engSubsFound = false;
+     //x.sources.forEach(function(item, index) {
+      	document.getElementById("player1").innerHTML = "<source src=\"/cors-proxy/m3u8/rabbitstream/anime/" + item.url + "\" type=\"application/x-mpegURL\" size=\"" + item.quality + "\">";
+	// document.getElementById("player1").innerHTML = "<source src=\"https://hls.slidemovies.org/m3u8/rabbitstream/" + encodeURIComponent(item.url) + "\" type=\"application/x-mpegURL\" size=\"" + item.quality + "\">";
+      //});
+      x.subtitles.forEach(function(item, index) {
+      if (!item.lang.includes("Default") && !item.lang.includes("Thumbnails")) {
+        document.getElementById("player1").innerHTML += "<track src=\"/cors-proxy/m3u8/rabbitstream/" + item.url + "\" kind=\"subtitles\" srclang=\"" + item.lang.substring(0,2) + "\" label=\"" + item.lang + "\">";
+      }
+        else if (item.lang.includes("Portugese")) {
+         document.getElementById("player1").innerHTML += "<track src=\"/cors/" + item.url + "\" kind=\"subtitles\" srclang=\"pt\" label=\"" + item.lang + "\">";
+        }
+	else if (item.lang.substring(0,2) == "En" && engSubsFound == false) {
+         document.getElementById("player1").innerHTML += "<track default src=\"/cors/" + item.url + "\" kind=\"subtitles\" srclang=\"en\" label=\"" + item.lang + "\">";
+	 engSubsFound = true;
+        }
+        else {
+         path2vtt = item.url;
+        }
+      });
+      load();
+    }
+    function go2(x){
+	  fetch("https://api.consumet.org/anime/zoro/watch?episodeId=" + x.episodes[Number(episode) - 1].id.replace("$both", ""))
+ 	 .then((response) => response.json())
+  	 .then((data) => go4(data));
+	}
+    function gox(x) {
+     var data = x;
+     console.log(x);
+     fetch("https://api.consumet.org/anime/zoro/info?id=" + Object.values(data.Sites["Zoro"])[0].url.split("/").pop())
+ 	 .then((response) => response.json())
+  	 .then((data) => go2(data));
+    }
+    function go(x) {
+     fetch("https://api.consumet.org/cors/https://api.malsync.moe/mal/anime/" + x)
+ 	 .then((response) => response.json())
+  	 .then((data) => gox(data));
+    }
+    fetch("/tmdb2mal/?id=" + id + "&s=" + season)
+ 	 .then((response) => response.text())
+  	 .then((data) => go(data));
+window.addEventListener("message",
+   function(e) {
+     if (typeof e.data === "string" && e.data.startsWith("seekTo::")) {
+    	console.log(e.data);
+	document.getElementById("player1").currentTime = Number(e.data.replace("seekTo::", ""));
+     }
+   },
+false);
+</script>
+</body>
+</html>

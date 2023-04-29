@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Episode Select</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+select:focus {
+ outline: 3px solid dimgrey;
+}
+button {
+ cursor: pointer;
+ font-weight: 900;
+}
+input.form-control {
+  width: auto;
+  display: inline-block;
+  color: white;
+  background-color: black;
+}
+input.form-control:focus {
+  display: inline-block;
+  color: white;
+  background-color: black;
+}
+</style>
+</head>
+<body style="background-color:rgba(0,0,0,0.5);color:white;padding:15px;text-align:center;font-weight:900;">
+
+<div style="position:fixed;top:5%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center;">
+<div style="display:inline-block;position:absolute;left:calc(50% - 200px);top:0;">
+Season: &nbsp;<input id="sea" class="form-control" placeholder="1" value="1"><br>
+Episode: <input id="epi" class="form-control" placeholder="1" value="1">
+</div>
+<button class="btn btn-lg btn-dark" style="height:75px;position:absolute;font-weight:900;font-size:13px;right:calc(50% - 200px);top:0;background-color:black;" onclick="setEpisode(elm('epi').value, elm('sea').value);">SUBMIT</button>
+</div>
+
+<script>
+var url_string = location.href;
+var id = url_string.split("/").pop();
+var season = "1";
+function elm(x) {
+  return document.getElementById(x);
+}
+function setEpisode(x, y) {
+  parent.postMessage("SetEpisode::" + y + "::" + x, "*");
+}
+setEpisode("1", "1");
+</script>
+</body>
+</html>
