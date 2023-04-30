@@ -156,7 +156,7 @@ window.addEventListener("message",
 	 sessionID = e.data.split("::")[1];
 	 document.getElementById("link").innerHTML = "https://hyaku.slidemovies.org/w2g-view/" + e.data.split("::")[1];
 	 document.getElementById("link").href = "https://hyaku.slidemovies.org/w2g-view/" + e.data.split("::")[1];
-	 document.getElementById("frameTwo").innerHTML = "https://embed.tlk.io/hy" + e.data.split("::")[1] + "?theme=theme--night";
+	 document.getElementById("frameTwo").src = "https://embed.tlk.io/hy" + e.data.split("::")[1] + "?theme=theme--night";
      }
    },
 false);
