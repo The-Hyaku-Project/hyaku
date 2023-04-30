@@ -4,7 +4,7 @@ This is the frontend for Hyaku.
 
 # What is Hyaku?
 Hyaku is an ad-free anime streaming website. It's complete with Watch2Gether, comments, ratings, and more!<br>
-Currently scrapes from Zoro.to, GogoAnime, ~and AnimePahe~ but more providers are coming soon!
+Currently scrapes from Zoro.to, GogoAnime, AnimeNewsNetwork, ~and AnimePahe~ but more providers are coming soon!
 
 # License
 This repository, and all other repositories within this organization are under the GNU GPLv3 license, which can be viewed [here](LICENSE).
