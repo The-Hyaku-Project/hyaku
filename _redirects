@@ -5,3 +5,4 @@
 /comments/* https://your-comments-server/:splat 200!
 /cors-proxy/* https://your-cors-proxy/:splat 301!
 /tmdb2mal/* https://your-instance-of-tmdb-to-mal/:splat 200!
+/ann/* /ann/ 200!
