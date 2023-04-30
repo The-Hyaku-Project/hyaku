@@ -196,7 +196,7 @@ fetch("https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key)
 }
 reload();
 function showData(x) {
-  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-sm btn-dark\" style=\"background-color:black;\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-sm btn-dark\" style=\"background-color:#242424;\">Host Session</button></div><br><br>";
+  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-dark\" style=\"background-color:#242424;\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-dark\" style=\"background-color:#242424;\">Host Session</button></div><br><br>";
   x.results.forEach(async function(item, index) {
     var fetchReqMain = await fetch("https://api.themoviedb.org/3/tv/" + item.animeID + "?api_key=" + api_key);
     var fetchDataM = await fetchReqMain.json();
