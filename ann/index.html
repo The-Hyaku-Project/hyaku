@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hyaku | AnimeNewsNetwork</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap');
+.center-center {
+  position: absolute;
+  top: -40px;
+  text-align: left;
+  left: -40px;
+  width: 100%;
+  color: white;
+  padding: 50px;
+  font-family: Arial, FontAwesome
+}
+.center-center input {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  color: white !important;
+}
+#title {
+  cursor: pointer;
+  width: 96px;
+  display: inline-block;
+}
+#title:hover {
+  /*border-bottom: 2px solid white;*/
+  color: rgba(255,255,255,0.7);
+  display: inline-block;
+  text-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+#hyakuRes {
+  line-height: 10px;
+  overflow-x: hidden !important;
+}
+.anime-res {
+  padding: 10px;
+  text-align: left;
+  transition: 0.4s all;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(255,255,255,0.3);
+  border-radius: 5px;
+}
+.anime-res p {
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+}
+.anime-res:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+.anime-res span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100% !important;
+  padding: 5px;
+  margin-left: -5px;
+}
+a {
+  color: white;
+}
+a:hover {
+  color: white;
+}
+</style>
+</head>
+<body style="background-color:black;">
+
+<div id="backdrop" style="position:fixed;top:0;left:0;width:100%;height:100%;background-image:url();background-size:cover;background-position:center;background-repeat:no-repeat;background-color:black;"></div>
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);"></div>
+
+<span style="position:fixed;top:0;right:0;color:white;padding:5px;display:none;">Backdrop from <span id="bgText">??</span></span>	
+
+<div style="position:fixed;top:0;left:0;background-color:white;height:2px;width:0%;transition:0.4s all;box-shadow: 0px 0px 5px white;" id="loader"></div>
+
+<span style="display:none;position:fixed;top:0;left:0;color:white;padding:5px;">You have selected <span id="lang">English</span> as your main language.</span>	
+
+<form action="/" method="GET">
+<div class="center-center">
+	<h2 style="text-align:center;display:inline-block;font-weight:900;transition:0.2s all;" onclick="location.href='/';" id="title">Hyaku</h2>&nbsp;&nbsp;
+	<input name="q" type="text" id="search" class="form-control" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);width:calc(100% - 125px);display:inline-block;" placeholder="&#xF002; Search...">
+   	<div id="hyakuRes" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);height:0px;border-radius:0 0 5px 5px;overflow-x:scroll;display:none;transition:0.4s all !important;">
+    </div>
+        <div style="padding:5px;padding-top:20px;">
+	<a href="/anime/" class="btn btn-dark" style="background-color:#242424;">Browse Anime</a>
+	<a href="/" class="btn btn-dark" style="background-color:#242424;">Search</a>
+	<a href="/anime/#ann" class="btn btn-dark" style="background-color:#242424;">News</a>
+   	</div>
+</div>
+</form>
+
+<div style="position:absolute;top:140px;width:100%;text-align:left;padding:15px;" class="text-light">
+
+  <h3 id="news">Loading...</h3>
+  <p id="newsX">Loading...</p>
+  <p id="newsI">Loading...</p>
+  <p id="newsD">Loading...</p>
+
+<!--<br><br>-->
+</div>
+
+<span style="position:fixed;bottom:0;left:0;color:white;padding:5px;background-color:#242424;width:100%;display:none;">Made possible using <a href="https://consumet.org" target="_blank"><img src="/consumet.webp" style="height:25px;width:auto;"> Consumet</a> &amp; <a href="https://developers.themoviedb.org/3" target="_blank"><img src="https://themoviedb.org/favicon.ico" style="height:20px;width:auto;"> The TMDb API</a></span>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+var season = 1;
+var episode = 1;
+function loaderEmpty() {
+  document.getElementById("loader").style.transition = "0s all";
+  document.getElementById("loader").style.opacity = "0";
+  document.getElementById("loader").style.width = "0";
+  document.getElementById("loader").style.opacity = "1";
+  document.getElementById("loader").style.transition = "0.4s all";
+}
+function loaderHalf() {
+  document.getElementById("loader").style.opacity = "1";
+  document.getElementById("loader").style.width = "50%";
+}
+function loaderFull() {
+  document.getElementById("loader").style.width = "100%";
+  setTimeout(function() {
+   document.getElementById("loader").style.opacity = "0";
+  }, 500);
+}
+if (!localStorage.getItem("lang")) {
+  localStorage.setItem("lang", "en");
+}
+function resetLang() {
+ if (localStorage.getItem("lang") == "jp") {
+   document.getElementById("title").innerHTML = "百";
+   document.getElementById("lang").innerHTML = "Japanese";
+ }
+ else {
+   document.getElementById("title").innerHTML = "Hyaku";
+   document.getElementById("lang").innerHTML = "English";	 
+ }
+}
+resetLang();
+loaderHalf();
+function setNews(x) {
+   document.getElementById("news").innerHTML = x.title.replace(" [email&nbsp;protected]");
+   document.getElementById("newsI").innerHTML = x.intro.replace("\n", "<br>");
+   document.getElementById("newsX").innerHTML = "Uploaded: " + x.uploadedAt;
+   document.getElementById("newsD").innerHTML = x.description.replace("\n", "<br>");
+   document.getElementById("backdrop").style.backgroundImage = "url(https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/kFqANiHH5CwcqAoau8PuT6qxmB6.jpg)";
+   loaderFull();
+}
+fetch("https://api.consumet.org/news/ann/info?id=" + location.href.replace(location.href.split("/ann")[0], ""))
+  .then((response) => response.json())
+  .then((data) => setNews(data));
+</script>
+</body>
+</html>
