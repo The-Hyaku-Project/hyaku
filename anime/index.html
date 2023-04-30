@@ -31,6 +31,12 @@
   width: 96px;
   display: inline-block;
 }
+hr {
+  border-color:white;
+}
+html {
+  scroll-behavior: smooth;
+}
 #title:hover {
   /*border-bottom: 2px solid white;*/
   color: rgba(255,255,255,0.7);
@@ -107,9 +113,14 @@ a:hover {
 
 <form action="/" method="GET">
 <div class="center-center">
-	<h2 style="text-align:center;display:inline-block;font-weight:900;transition:0.2s all;" onclick="if(this.innerHTML!='Hyaku'){this.innerHTML='Hyaku';localStorage.setItem('lang', 'en');}else{this.innerHTML='百';localStorage.setItem('lang', 'jp');}resetLang();loaderEmpty();setTimeout(function(){reload();},500);" id="title">Hyaku</h2>&nbsp;&nbsp;
+	<h2 style="text-align:center;display:inline-block;font-weight:900;transition:0.2s all;" onclick="location.href='/';" id="title">Hyaku</h2>&nbsp;&nbsp;
 	<input name="q" type="text" id="search" class="form-control" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);width:calc(100% - 125px);display:inline-block;" placeholder="&#xF002; Search...">
-    <div id="hyakuRes" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);height:0px;border-radius:0 0 5px 5px;overflow-x:scroll;display:none;transition:0.4s all !important;">
+   	<div id="hyakuRes" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);height:0px;border-radius:0 0 5px 5px;overflow-x:scroll;display:none;transition:0.4s all !important;">
+    </div>
+    <div style="padding:5px;padding-top:20px;">
+	<a href="#" class="btn btn-dark" style="background-color:#242424;">Browse Anime</a>
+	<a href="/" class="btn btn-dark" style="background-color:#242424;">Search</a>
+	<a href="#ann" class="btn btn-dark" style="background-color:#242424;">News</a>
     </div>
 </div>
 </form>
@@ -121,13 +132,13 @@ a:hover {
 <div style="background-color:#242424;width:100%;height:40px;position:absolute;bottom:0;color:lightgrey;padding-top:7px;border-radius:5px;">&nbsp;&nbsp;120089 - Season 1 Episode 2</div>
 </div>
 	
-<div style="position:absolute;top:90px;width:100%;text-align:center;" id="reses" class="text-light">
-
+<div style="position:absolute;top:140px;width:100%;text-align:center;" class="text-light">
 <div id="featuredMain" style="background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);padding:20px;width:calc(100% - 30px);display:inline-block;text-align:left;border-radius:5px;cursor:pointer;">
 <div style="width:100%;line-height:40px;"><h4><img id="imgFeatured" src="https://i.ibb.co/Xs7b7DF/placeholder.png" style="width:50px;border-radius:3px;">&nbsp;&nbsp;<span id="titleFeatured">...</span></h4>
 <p></p><p></p><div style="line-height:130%;" id="descFeatured">...</div><p></p></div>
 </div><br><br>
-
+<div id="reses" class="text-light"></div>
+<div id="resesN" style="padding:15px;" class="text-light"></div>
 </div>
 
 <span style="position:fixed;bottom:0;left:0;color:white;padding:5px;background-color:#242424;width:100%;display:none;">Made possible using <a href="https://consumet.org" target="_blank"><img src="/consumet.webp" style="height:25px;width:auto;"> Consumet</a> &amp; <a href="https://developers.themoviedb.org/3" target="_blank"><img src="https://themoviedb.org/favicon.ico" style="height:20px;width:auto;"> The TMDb API</a></span>
@@ -157,7 +168,7 @@ function backdrop(x) {
   document.getElementById("featuredMain").setAttribute("onclick", "location.href='/anime/" + res.id + "';");
 }
 
-function backdrop2(x) {
+function fetchAnime(x) {
   var res = x.results;
   res.forEach(function(item, index) {
    if (localStorage.getItem("lang") == "jp") {
@@ -200,7 +211,13 @@ function resetLang() {
  }
 }
 resetLang();
-
+function animeNewsNetwork(x) {
+   document.getElementById("resesN").innerHTML += `<hr id="ann"><p style="text-align:left;">News provided by AnimeNewsNetwork.</p>`;
+   x.forEach(function(item, index) {
+     document.getElementById("resesN").innerHTML += `<a href="/ann/` + item.id + `"><div style="text-align:center;margin-right:10px;height:220px;overflow:hidden;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;margin-bottom:10px;background-color:rgba(0,0,0,0.5);color:white;width:200px;border-radius:10px;display:inline-block;border-radius:5px;padding:10px;"><div style="display:inline-block;width:100%;height:150px;background-image:url(` + item.thumbnail + `);background-size:cover;background-position:center;"></div>` + item.title.replace("[email protected] ", "") + `</div></a>`;
+   });
+   document.getElementById("resesN").innerHTML += "<hr>";
+}
 var url_string = location.href;
 function reload() {
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=" + (Math.floor(Math.random() * 1) + 1))
@@ -208,22 +225,25 @@ fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_key
   .then((data) => backdrop(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=1")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=2")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=3")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=4")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=5")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=6")
   .then((response) => response.json())
-  .then((data) => backdrop2(data));
+  .then((data) => fetchAnime(data));
+fetch("https://api.consumet.org/news/ann/recent-feeds")
+  .then((response) => response.json())
+  .then((data) => animeNewsNetwork(data));
 }
 reload();
 function fixMe(x) {
