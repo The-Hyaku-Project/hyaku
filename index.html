@@ -97,7 +97,7 @@ a:hover {
 <div style="background-color:black;bottom:10px;right:10px;width:300px;height:200px;position:fixed;z-index:99;display:block;border-radius:5px;" id="miniplayer">
 <button class="btn btn-sm btn-dark" style="position:absolute;right:0;background-color:#242424;" onclick="this.parentElement.style.display = 'none';localStorage.removeItem('miniPlayer');">&times;</button>
 <iframe style="border:0;border-radius:5px;" src="/miniplayer/"></iframe>
-<div style="background-color:#242424;width:100%;height:40px;position:absolute;bottom:0;color:lightgrey;padding-top:7px;border-radius:5px;">&nbsp;&nbsp;<span id="miniID">00000</span> - Season 1 Episode 2</div>
+<div style="background-color:#242424;width:100%;height:40px;position:absolute;bottom:0;color:lightgrey;padding-top:7px;border-radius:5px;">&nbsp;&nbsp;<span id="miniID">00000</span> - <span id="miniEpisode">Season 1 Episode 1</span></div>
 </div>
 
 <span style="position:fixed;bottom:0;left:0;color:white;padding:5px;display:none;">Made possible using <a href="https://consumet.org" target="_blank"><img src="consumet.webp" style="height:25px;width:auto;"> Consumet</a> &amp; <a href="https://developers.themoviedb.org/3" target="_blank"><img src="https://themoviedb.org/favicon.ico" style="height:20px;width:auto;"> The TMDb API</a></span>
@@ -109,7 +109,8 @@ if (localStorage.getItem("miniPlayer") == null) {
   document.getElementById("miniplayer").style.display = "none";
 }
 else {
-  document.getElementById("miniID").innerHTML = localStorage.getItem("miniPlayer").split("~")[0];	
+  document.getElementById("miniID").innerHTML = localStorage.getItem("miniPlayer").split("~")[0];
+  document.getElementById("miniEpisode").innerHTML = "Season " + localStorage.getItem("miniPlayer").split("~")[1] + " Episode " + localStorage.getItem("miniPlayer").split("~")[2];
 }
 var url_string = window.location.href;
 var url = new URL(url_string);
