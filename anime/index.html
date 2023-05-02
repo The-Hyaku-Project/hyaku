@@ -129,7 +129,7 @@ a:hover {
 <div style="background-color:black;bottom:10px;right:10px;width:300px;height:200px;position:fixed;z-index:99;display:block;border-radius:5px;" id="miniplayer">
 <button class="btn btn-sm btn-dark" style="position:absolute;right:0;background-color:#242424;" onclick="this.parentElement.style.display = 'none';localStorage.removeItem('miniPlayer');">&times;</button>
 <iframe style="border:0;" src="/miniplayer/"></iframe>
-<div style="background-color:#242424;width:100%;height:40px;position:absolute;bottom:0;color:lightgrey;padding-top:7px;border-radius:5px;">&nbsp;&nbsp;120089 - Season 1 Episode 2</div>
+<div style="background-color:#242424;width:100%;height:40px;position:absolute;bottom:0;color:lightgrey;padding-top:7px;border-radius:5px;">&nbsp;&nbsp;<span id="miniID">0000</span> - <span id="miniEpisode">Season 1 Episode 1</span></div>
 </div>
 	
 <div style="position:absolute;top:140px;width:100%;text-align:center;" class="text-light">
@@ -151,6 +151,7 @@ if (localStorage.getItem("miniPlayer") == null) {
 }
 else {
   document.getElementById("miniID").innerHTML = localStorage.getItem("miniPlayer").split("~")[0];	
+  document.getElementById("miniEpisode").innerHTML = "Season " + localStorage.getItem("miniPlayer").split("~")[1] + " Episode " + localStorage.getItem("miniPlayer").split("~")[2];
 }
 function backdrop(x) {
   var res = x.results[Math.floor(Math.random() * x.results.length)];
