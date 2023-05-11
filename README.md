@@ -17,4 +17,4 @@ Also make sure to change the `api_key` variable in [script.js](script.js) to you
 Fork this repository, make changes, and then create a pull request.
 
 ---
-Made possible using [<img src="consumet.webp" width="30px"> Consumet](https://github.com/consumet).<br>Arigatou, [@riimuru](https://github.com/riimuru) for feedback in the early stages of Hyaku.
+Made possible using [<img src="consumet.webp" width="30px"> Consumet](https://github.com/consumet).
