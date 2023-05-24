@@ -82,6 +82,9 @@ a:hover {
   50% {background-color: lightgreen;}
   100% {background-color: dimgrey;}
 }
+.btn-light:hover {
+  opacity: 1 !important;	
+}
 </style>
 </head>
 <body style="background-color:black;">
@@ -199,7 +202,7 @@ fetch("https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key)
 }
 reload();
 function showData(x) {
-  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-light\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-light\"Host Session</button></div><br><br>";
+  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-light\" style=\"opacity:0.7;\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-light\" style=\"opacity:0.7;\">Host Session</button></div><br><br>";
   x.results.forEach(async function(item, index) {
     var fetchReqMain = await fetch("https://api.themoviedb.org/3/tv/" + item.animeID + "?api_key=" + api_key);
     var fetchDataM = await fetchReqMain.json();
