@@ -101,10 +101,16 @@ a:hover {
 	<input name="q" type="text" id="search" class="form-control" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);width:calc(100% - 125px);display:inline-block;" placeholder="&#xF002; Search...">
    	<div id="hyakuRes" style="padding:15px;font-size:17px;background-color:rgba(0,0,0,0.5);backdrop-filter:blur(3px);height:0px;border-radius:0 0 5px 5px;overflow-x:scroll;display:none;transition:0.4s all !important;">
     </div>
+    <div style="padding:5px;padding-top:20px;">
+	<a href="/anime/" class="btn btn-dark" style="background-color:#242424;">Browse Anime</a>
+	<a href="/" class="btn btn-dark" style="background-color:#242424;">Search</a>
+	<a href="/anime/#ann" class="btn btn-dark" style="background-color:#242424;">News</a>
+	<a href="/w2g/" class="btn btn-dark" style="background-color:#242424;">Watch2Gether</a>
+    </div>
 </div>
 </form>
 
-<div style="position:absolute;top:90px;width:100%;text-align:left;padding:15px;text-align:center;" class="text-light" id="mainContainer">
+<div style="position:absolute;top:140px;width:100%;text-align:left;padding:15px;text-align:center;" class="text-light" id="mainContainer">
   
   <h3>Loading...</h3>
   
@@ -193,7 +199,7 @@ fetch("https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key)
 }
 reload();
 function showData(x) {
-  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-dark\" style=\"background-color:#242424;\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-dark\" style=\"background-color:#242424;\">Host Session</button></div><br><br>";
+  document.getElementById("mainContainer").innerHTML = "<div style=\"text-align:left;\"><button onclick=\"reFetch();\" class=\"btn btn-light\">Fetch Again</button> <button onclick=\"location.href='/w2g-host/';\" class=\"btn btn-light\"Host Session</button></div><br><br>";
   x.results.forEach(async function(item, index) {
     var fetchReqMain = await fetch("https://api.themoviedb.org/3/tv/" + item.animeID + "?api_key=" + api_key);
     var fetchDataM = await fetchReqMain.json();
