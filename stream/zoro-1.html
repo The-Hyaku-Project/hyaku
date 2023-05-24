@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>AnimePahe</title>
+ <title>Zoro</title>
  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css">
  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&amp;display=swap" rel="stylesheet">
  <style>body{font-family: 'Lexend deca',sans-serif;background-color:black;}.plyr__video-wrapper{ background:black !important;} #videocontainer{height:100vh;width:100vw;} .plyr__control--overlaid{border-radius:50%;}.plyr{height:100% !important;}.plyr__menu__container{border-radius:2px;}.plyr__time+.plyr__time{display:block;}</style>
@@ -21,6 +21,54 @@ video.addEventListener('loadeddata', function() {
      video.currentTime = localStorage.getItem("currentPlayerTime~" + id + "~" + episode + "~" + season);
    }
    video.play();
+	
+	
+   document.getElementById("loadingIndicator").style.display = "none";
+   var SkipTimeOP = false;
+   var SkipTimeEN = false;
+   fetch("https://api.aniskip.com/v2/skip-times/" + mal_id + "/" + episode + "?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=" + video.duration)
+ 	.then((response) => response.json())
+ 	.then((data) => {
+   	     console.log(data);
+	     if (typeof data.results[0].skipId !== "undefined") {
+	       setInterval(function() {
+	       console.log("AniSkip");
+	       if (SkipTimeOP == false && SkipTimeEN == false) {
+		   document.getElementById("skipBtn").style.display = "none";
+	       }
+	       data.results.forEach(function(item) {
+		 console.log("AniSkip Compare: " + item.interval.startTime + "<" + video.currentTime + "<" + item.interval.endTime);
+	         if (item.interval.startTime < video.currentTime && item.interval.endTime > video.currentTime) {
+		   skippingTimeFound = true;
+		   if (item.skipType.includes("op")) {
+		     console.log("AniSkip OP");
+		     document.getElementById("skipBtn").innerHTML = "Skip Intro";
+		     document.getElementById("skipBtn").style.display = "block";
+		     document.getElementById("skipBtn").setAttribute("onclick", "video.currentTime=" + item.interval.endTime + ";");
+		     SkipTimeOP = true;
+		     SkipTimeEN = false;
+		   }
+		   else {
+		     console.log("AniSkip EN");
+		     document.getElementById("skipBtn").innerHTML = "Skip Outro";
+		     document.getElementById("skipBtn").style.display = "block";
+		     document.getElementById("skipBtn").setAttribute("onclick", "video.currentTime=" + item.interval.endTime + ";");
+		     SkipTimeEN = true;
+		     SkipTimeOP = false;
+		   }
+		 }
+		 else if (item.skipType.includes("op")) {
+		     SkipTimeOP = false;
+		 }
+		 else {
+		     SkipTimeEN = false;
+		 }
+	       });
+	       }, 400);
+	     }
+    	}
+   );
+	
    setInterval(function() {
     localStorage.setItem("currentPlayerTime~" + id + "~" + episode + "~" + season, document.getElementById("player1").currentTime);
    }, 1000);
