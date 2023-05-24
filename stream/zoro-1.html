@@ -12,6 +12,8 @@
  <video autoplay crossorigin id="player1" style="position:fixed;width:100%;height:100%;" controls></video>
 </div>
 
+<h2 style="color:white;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);margin-top:0;display:inline-block;text-align:center;" id="loadingIndicator"></h2>
+	
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
 <script>
@@ -107,12 +109,18 @@ document.getElementById("episode").setAttribute("placeholder", "Episode: " + epi
 document.getElementById("id").value = Number(id);*/
     function go4(x) {
     console.log(x);
+    document.getElementById("loadingIndicator").innerHTML = "Setting the sources... (5/5)";
+    if (typeof x.episodes[Number(episode) - 1] === "undefined") {
+	document.getElementById("loadingIndicator").style.color = "crimson";
+	document.getElementById("loadingIndicator").innerHTML = "No source could be found.<br>Retrying in 5 seconds.";
+	console.error("Loading aborted, sources could not be found. Retrying in 5000 ms.");
+	setTimeout(function() {
+          location.reload();
+	}, 5000);
+    }
     var item = x.sources[0];
      engSubsFound = false;
-     //x.sources.forEach(function(item, index) {
-      	document.getElementById("player1").innerHTML = "<source src=\"/cors-proxy/m3u8/rabbitstream/anime/" + item.url + "\" type=\"application/x-mpegURL\" size=\"" + item.quality + "\">";
-	// document.getElementById("player1").innerHTML = "<source src=\"https://hls.slidemovies.org/m3u8/rabbitstream/" + encodeURIComponent(item.url) + "\" type=\"application/x-mpegURL\" size=\"" + item.quality + "\">";
-      //});
+      document.getElementById("player1").innerHTML = "<source src=\"/cors-proxy/m3u8/rabbitstream/anime/" + item.url + "\" type=\"application/x-mpegURL\" size=\"" + item.quality + "\">";
       x.subtitles.forEach(function(item, index) {
       if (!item.lang.includes("Default") && !item.lang.includes("Thumbnails")) {
         document.getElementById("player1").innerHTML += "<track src=\"/cors-proxy/m3u8/rabbitstream/" + item.url + "\" kind=\"subtitles\" srclang=\"" + item.lang.substring(0,2) + "\" label=\"" + item.lang + "\">";
@@ -131,22 +139,39 @@ document.getElementById("id").value = Number(id);*/
       load();
     }
     function go2(x){
-	  fetch("https://api.consumet.org/anime/zoro/watch?episodeId=" + x.episodes[Number(episode) - 1].id.replace("$both", ""))
+	document.getElementById("loadingIndicator").innerHTML = "Fetching sources... (4/5)";
+	if (typeof x.episodes[Number(episode) - 1] === "undefined") {
+	  document.getElementById("loadingIndicator").style.color = "crimson";
+	  document.getElementById("loadingIndicator").innerHTML = "Could not find the episode!";
+	  console.error("Loading aborted, episode " + (Number(episode) - 1).toString() + " not found.");
+	  return;
+        }
+	fetch("https://api.consumet.org/anime/zoro/watch?episodeId=" + x.episodes[Number(episode) - 1].id.replace("$both", ""))
  	 .then((response) => response.json())
   	 .then((data) => go4(data));
 	}
     function gox(x) {
      var data = x;
      console.log(x);
+     if (typeof data.Sites["Zoro"] === "undefined") {
+	document.getElementById("loadingIndicator").style.color = "crimson";
+	document.getElementById("loadingIndicator").innerHTML = "This Anime is Not<br>Available on Zoro<br>Please Change the Server.";
+	console.error("Loading aborted, key \"Zoro\" not found.");
+	return;
+     }
+     document.getElementById("loadingIndicator").innerHTML = "Finding episodes... (3/5)";
      fetch("https://api.consumet.org/anime/zoro/info?id=" + Object.values(data.Sites["Zoro"])[0].url.split("/").pop())
  	 .then((response) => response.json())
   	 .then((data) => go2(data));
     }
     function go(x) {
+     mal_id = x;
+     document.getElementById("loadingIndicator").innerHTML = "Matching the ID... (2/5)";
      fetch("https://api.consumet.org/cors/https://api.malsync.moe/mal/anime/" + x)
  	 .then((response) => response.json())
   	 .then((data) => gox(data));
     }
+    document.getElementById("loadingIndicator").innerHTML = "Finding the ID... (1/5)";
     fetch("/tmdb2mal/?id=" + id + "&s=" + season)
  	 .then((response) => response.text())
   	 .then((data) => go(data));
