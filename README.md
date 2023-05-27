@@ -1,4 +1,5 @@
 # Hyaku / Hyaku Frontend Beta (ver. 2)
+[hyaku.eu.org](https://hyaku.eu.org)
 [hyaku.slidemovies.org](https://hyaku.slidemovies.org)<br>
 This is the frontend for Hyaku.
 
