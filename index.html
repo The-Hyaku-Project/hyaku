@@ -188,7 +188,22 @@ function unopacity() {
 fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_keywords=210024&page=" + (Math.floor(Math.random() * 1) + 1))
   .then((response) => response.json())
   .then((data) => backdrop(data));
-function searchProcess(x) {
+function searchProcess(x, y, z) {
+  fetch("https://api.jikan.moe/v4/manga?q=" + z + "&page=1&limit=5&sfw")
+   .then((response) => response.json())
+   .then((data) => searchProcess(data, "m", z));
+  if (typeof y !== "undefined" && y == "m") {
+    document.getElementById("hyakuRes").innerHTML += "<hr><h4>Manga</h4>";
+    x.data.forEach(function(item, index) {
+      if (localStorage.getItem("lang") == "jp") {
+	 var cName = item.titles[1].title;
+      }
+      else {
+         var cName = item.titles[0].title;
+      }
+      document.getElementById("hyakuRes").innerHTML += "<a style=\"user-select:none;text-decoration:none;\" href=\"/manga/" + item.mal_id + "\"><div class=\"anime-res\" style=\"opacity:0;\"><img style=\"width:60px;height:auto;\" src=\"https://image.tmdb.org/t/p/w500" + item.images.jpg.image_url + "\">&nbsp;&nbsp;<div style=\"display:inline-block;\"><p style=\"display:block;\">" + (index + 1) + "</p><span style=\"position:absolute;\">" + cName + "</span></div></div></a><br>";
+    });
+  }
   document.getElementById("hyakuRes").innerHTML = "";
   x.results.forEach(function(item, index) {
    if (localStorage.getItem("lang") == "jp") {
@@ -238,7 +253,7 @@ function search(x) {
  loaderEmpty();
  fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_text_query=" + x + "&with_keywords=210024&page=1")
   .then((response) => response.json())
-  .then((data) => searchProcess(data));
+  .then((data) => searchProcess(data, "a", x));
 }
 setTimeout(function() {
  loaderFull();
