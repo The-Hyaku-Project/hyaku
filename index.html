@@ -189,22 +189,7 @@ fetch("https://api.themoviedb.org/3/discover/tv?api_key=" + api_key + "&with_key
   .then((response) => response.json())
   .then((data) => backdrop(data));
 function searchProcess(x, y, z) {
-  fetch("https://api.jikan.moe/v4/manga?q=" + z + "&page=1&limit=5&sfw")
-   .then((response) => response.json())
-   .then((data) => searchProcess(data, "m", z));
-  if (typeof y !== "undefined" && y == "m") {
-    document.getElementById("hyakuRes").innerHTML += "<hr><h4>Manga</h4>";
-    x.data.forEach(function(item, index) {
-      if (localStorage.getItem("lang") == "jp") {
-	 var cName = item.titles[1].title;
-      }
-      else {
-         var cName = item.titles[0].title;
-      }
-      document.getElementById("hyakuRes").innerHTML += "<a style=\"user-select:none;text-decoration:none;\" href=\"/manga/" + item.mal_id + "\"><div class=\"anime-res\" style=\"opacity:0;\"><img style=\"width:60px;height:auto;\" src=\"https://image.tmdb.org/t/p/w500" + item.images.jpg.image_url + "\">&nbsp;&nbsp;<div style=\"display:inline-block;\"><p style=\"display:block;\">" + (index + 1) + "</p><span style=\"position:absolute;\">" + cName + "</span></div></div></a><br>";
-    });
-  }
-  document.getElementById("hyakuRes").innerHTML = "";
+  document.getElementById("hyakuRes").innerHTML = "<div style=\"text-align:left;\"><button class=\"btn btn-sm btn-dark\" style=\"background-color:#242424;\" onclick=\"location.href='#anime';\">Anime</button>&nbsp;&nbsp;<button class=\"btn btn-sm btn-dark\" style=\"background-color:#242424;\" onclick=\"location.href='#manga';\">Manga</button></div><h5 style=\"text-align:left;\" id=\"anime\">Anime</h5>";
   x.results.forEach(function(item, index) {
    if (localStorage.getItem("lang") == "jp") {
 	 var cName = item.original_name;
@@ -219,6 +204,29 @@ function searchProcess(x, y, z) {
      document.getElementById("hyakuRes").style.height = "150px";
    }
    document.getElementById("hyakuRes").innerHTML += "<a style=\"user-select:none;text-decoration:none;\" href=\"/anime/" + item.id + "\"><div class=\"anime-res\" style=\"opacity:0;\"><img style=\"width:60px;height:auto;\" src=\"https://image.tmdb.org/t/p/w500" + item.poster_path + "\">&nbsp;&nbsp;<div style=\"display:inline-block;\"><p style=\"display:block;\">" + (index + 1) + "</p><span style=\"position:absolute;\">" + cName + "</span></div></div></a><br>";
+  });
+  unopacity();
+  fetch("https://api.jikan.moe/v4/manga?q=" + z + "&page=1&limit=4&sfw")
+   .then((response) => response.json())
+   .then((data) => searchManga(data, "m", z));	
+}
+
+function searchManga(x, y, z) {
+  document.getElementById("hyakuRes").innerHTML += "<hr id=\"manga\"><h5 style=\"text-align:left;\">Manga</h5>";
+  x.data.forEach(function(item, index) {
+   if (localStorage.getItem("lang") == "jp") {
+       var cName = item.titles[1].title;
+   }
+   else {
+       var cName = item.titles[0].title;
+   }
+   if (index >= 2) {
+     document.getElementById("hyakuRes").style.height = "300px";
+   }
+   else {
+     document.getElementById("hyakuRes").style.height = "150px";
+   }
+   document.getElementById("hyakuRes").innerHTML += "<a style=\"user-select:none;text-decoration:none;\" href=\"/manga/" + item.mal_id + "\"><div class=\"anime-res\" style=\"opacity:0;\"><img style=\"width:60px;height:auto;\" src=\"" + item.images.jpg.image_url + "\">&nbsp;&nbsp;<div style=\"display:inline-block;\"><p style=\"display:block;\">" + (index + 1) + "</p><span style=\"position:absolute;\">" + cName + "</span></div></div></a><br>";
   });
   unopacity();
 }
